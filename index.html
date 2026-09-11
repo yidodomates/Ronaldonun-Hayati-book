@@ -4,662 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ronaldo'nun Hayatı - v2.4 Social & Gold Request Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Poppins:wght@300;400;600;800&display=swap');
+        :root {
+            --bg-dark: #121212;
+            --panel-bg: #1a1a1a;
+            --border-gold: #c5a059;
+            --text-gold: #e6ca65;
+            --text-white: #ffffff;
+            --accent-btn: #b8860b;
+        }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-image: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            color: #2c221e;
-            overflow-x: hidden;
-            user-select: none;
-            min-height: 100vh;
-        }
-
-        .book-font { font-family: 'Cinzel', serif; }
-
-        .among-frame {
-            background: rgba(20, 15, 10, 0.94);
-            backdrop-filter: blur(12px);
-            border: 4px solid #4a3525;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-            border-radius: 20px;
-        }
-
-        .book-container {
-            perspective: 2500px;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
 
-        .book-spread {
+        .container {
+            width: 95%;
+            max-width: 900px;
+            background: var(--panel-bg);
+            border: 2px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        }
+
+        .header {
             display: flex;
-            width: 100%;
-            max-width: 850px;
-            height: 360px;
-            background: #d4c3a3;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 0 60px rgba(0,0,0,0.2);
-            border-radius: 6px;
-            position: relative;
-            transform-style: preserve-3d;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-gold);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .book-page {
-            flex: 1;
-            padding: 24px;
-            background: linear-gradient(90deg, #eae0cc 0%, #f7f1e3 100%);
-            color: #2c221e;
-            position: relative;
+        .admin-badge {
+            background: #d32f2f;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .coin-display {
+            background: rgba(197, 160, 89, 0.2);
+            border: 1px solid var(--border-gold);
+            padding: 6px 14px;
+            border-radius: 8px;
+            color: var(--text-gold);
+            font-weight: bold;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .menu {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            backface-visibility: hidden;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            gap: 10px;
         }
 
-        .book-page.left {
-            border-right: 2px solid #b8a381;
-            background: linear-gradient(270deg, #eae0cc 0%, #f4ecdc 100%);
-            border-top-left-radius: 6px;
-            border-bottom-left-radius: 6px;
-            transform-origin: right center;
+        .menu-btn {
+            background: #2a2a2a;
+            border: 1px solid var(--border-gold);
+            color: var(--text-white);
+            padding: 12px;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
         }
 
-        .book-page.right {
-            border-left: 1px solid #fff;
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
-            transform-origin: left center;
+        .menu-btn:hover {
+            background: var(--border-gold);
+            color: #000;
         }
 
-        .turning-forward {
-            animation: physicsFlipForward 0.7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+        .panel-view {
+            background: #161616;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 250px;
         }
 
-        .turning-backward {
-            animation: physicsFlipBackward 0.7s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+        .book-text {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #d4d4d4;
         }
 
-        @keyframes physicsFlipForward {
-            0% { transform: rotateY(0deg) skewY(0deg); box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-            40% { transform: rotateY(-90deg) skewY(-3deg) scale(1.02); box-shadow: -25px 15px 30px rgba(0,0,0,0.4); }
-            100% { transform: rotateY(-180deg) skewY(0deg); box-shadow: 0 0 10px rgba(0,0,0,0.2); }
+        .action-btn {
+            background: var(--accent-btn);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
         }
 
-        @keyframes physicsFlipBackward {
-            0% { transform: rotateY(-180deg) skewY(0deg); box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-            40% { transform: rotateY(-90deg) skewY(3deg) scale(1.02); box-shadow: 25px 15px 30px rgba(0,0,0,0.4); }
-            100% { transform: rotateY(0deg) skewY(0deg); box-shadow: 0 0 10px rgba(0,0,0,0.2); }
-        }
-
-        .sidebar-btn {
-            transition: all 0.15s ease;
-            background: rgba(40, 28, 20, 0.85);
-            border: 2px solid #5c4033;
-            color: #d4c3a3;
-        }
-
-        .sidebar-btn:hover, .sidebar-btn.active {
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.25) 0%, rgba(40, 28, 20, 0.85) 100%);
-            border-color: #d4af37;
-            color: #ffd700;
-        }
-
-        #coin-toast-fixed {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 999;
-            transition: all 0.2s ease;
-            opacity: 0;
-            transform: translateY(-20px);
-            pointer-events: none;
-        }
-        #coin-toast-fixed.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .modal-overlay {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
+        .action-btn:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-2 md:p-6 relative">
+<body>
 
-    <div id="coin-toast-fixed" class="bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-2xl flex items-center gap-2 border-2 border-amber-200">
-        <i class="fa-solid fa-coins text-slate-950"></i> <span id="toast-text">+50 CR7 COIN EKLENDİ!</span>
-    </div>
+    <div class="container">
+        <!-- Üst Bilgi Alanı -->
+        <div class="header">
+            <div>
+                <h2>CR7_GALACTIC_USER</h2>
+                <span class="admin-badge">YÖNETİCİ</span>
+            </div>
+            <div class="coin-display">
+                Altın: <span id="coinCount">100</span> 🪙
+            </div>
+        </div>
 
-    <!-- GOLD REQUEST MODAL (ONAY PENCERESİ) -->
-    <div id="gold-request-modal" class="fixed inset-0 modal-overlay hidden flex items-center justify-center p-4">
-        <div class="bg-[#1c1410] border-2 border-amber-500/60 rounded-2xl p-6 max-w-md w-full shadow-2xl text-center space-y-4">
-            <div class="text-amber-400 text-3xl animate-bounce"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <h3 class="book-font text-base font-bold text-amber-300">ALTIN İSTEK ONAYI</h3>
-            <p id="modal-request-text" class="text-xs text-amber-100/80 leading-relaxed">
-                Birisi 31 altın istiyor.
-            </p>
-            
-            <div class="flex items-center justify-center gap-2 pt-2">
-                <input type="checkbox" id="never-ask-checkbox" class="w-4 h-4 accent-amber-500 rounded cursor-pointer">
-                <label for="never-ask-checkbox" class="text-xs text-amber-200/90 cursor-pointer">Bi daha bu kullanıcıdan izin alma</label>
+        <!-- Ana Panel -->
+        <div class="main-content">
+            <!-- Menü Butonları -->
+            <div class="menu">
+                <button class="menu-btn" onclick="switchTab('home')">🏠 Ana Menü</button>
+                <button class="menu-btn" onclick="switchTab('book')">📖 Kitabı Oku</button>
+                <button class="menu-btn" onclick="switchTab('store')">🛒 Altın Mağazası</button>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 pt-2">
-                <button onclick="handleGoldRequestResponse(false)" class="py-2.5 bg-red-950/80 hover:bg-red-900 border border-red-500/50 text-red-200 font-bold text-xs rounded-xl transition-all">
-                    İZİN VERME
-                </button>
-                <button onclick="handleGoldRequestResponse(true)" class="py-2.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs rounded-xl transition-all">
-                    İZİN VER
-                </button>
+            <!-- Dinamik Ekran Alanı -->
+            <div class="panel-view" id="panelView">
+                <h3>Panel Ana Sayfa</h3>
+                <p>Özel ID Aktif ve Doğrulandı: <strong>CR7_ADMIN_121147</strong>. Tüm altın transferleri ve istekler sana bağlı.</p>
+                <button class="action-btn" onclick="earnCoin()">Günlük Altın Al (+50)</button>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP CONTAINER -->
-    <div class="w-full max-w-6xl among-frame p-4 md:p-6 relative z-10 my-auto">
-        
-        <!-- HEADER -->
-        <div class="flex flex-wrap justify-between items-center border-b-2 border-[#4a3525] pb-4 mb-4 gap-3">
-            <div class="flex items-center gap-3">
-                <div class="w-4 h-4 rounded-full bg-amber-400 animate-pulse"></div>
-                <div>
-                    <div class="book-font text-amber-400 font-bold text-sm tracking-widest flex items-center gap-2">
-                        <span id="header-username">CR7_GALACTIC_USER</span>
-                        <span id="admin-badge" class="hidden bg-red-600 text-white text-[9px] px-2 py-0.5 rounded-full">YÖNETİCİ</span>
-                    </div>
-                    <div class="text-[10px] text-amber-200/70">ÖZEL ID: <span id="user-unique-id" class="text-cyan-300 font-mono">Bekleniyor...</span></div>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-3 flex-wrap">
-                <div class="bg-black/60 px-4 py-2 rounded-xl border border-[#4a3525] flex items-center gap-2 shadow-inner">
-                    <i class="fa-solid fa-coins text-yellow-400"></i>
-                    <span id="cash-balance" class="text-xs font-bold text-yellow-300">500 CR7 Coin</span>
-                </div>
-
-                <button onclick="startVoiceAI()" class="bg-amber-500/20 hover:bg-amber-500/40 text-amber-300 text-xs px-4 py-2 rounded-xl border border-amber-500/40 font-bold flex items-center gap-2 transition-all">
-                    <i id="mic-icon" class="fa-solid fa-microphone text-amber-400"></i>
-                    <span id="ai-btn-text">YİĞİT AI</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- LAYOUT -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            
-            <!-- SIDEBAR -->
-            <div class="md:col-span-1 space-y-2">
-                <div class="p-3 bg-black/60 rounded-xl border border-[#4a3525] text-center mb-2">
-                    <div class="book-font text-[10px] text-amber-200/60">SOCIAL EDITION</div>
-                    <div class="text-xl font-bold text-amber-400">v2.4</div>
-                </div>
-
-                <button id="nav-home" onclick="switchTab('home')" class="sidebar-btn active w-full p-2.5 rounded-xl flex items-center gap-3 font-bold text-xs">
-                    <i class="fa-solid fa-house text-amber-400"></i>
-                    <span>ANA MENÜ</span>
-                </button>
-
-                <button id="nav-play" onclick="switchTab('play')" class="sidebar-btn w-full p-2.5 rounded-xl flex items-center gap-3 font-bold text-xs">
-                    <i class="fa-solid fa-book-open text-amber-400"></i>
-                    <span>KİTABI OKU</span>
-                </button>
-
-                <button id="nav-friends" onclick="switchTab('friends')" class="sidebar-btn w-full p-2.5 rounded-xl flex items-center gap-3 font-bold text-xs">
-                    <i class="fa-solid fa-user-group text-cyan-400"></i>
-                    <span>ARKADAŞLAR & İSTEK</span>
-                </button>
-
-                <button id="nav-shop" onclick="switchTab('shop')" class="sidebar-btn w-full p-2.5 rounded-xl flex items-center gap-3 font-bold text-xs">
-                    <i class="fa-solid fa-cart-shopping text-yellow-400"></i>
-                    <span>ALTIN MAĞAZASI</span>
-                </button>
-
-                <button id="nav-settings" onclick="switchTab('settings')" class="sidebar-btn w-full p-2.5 rounded-xl flex items-center gap-3 font-bold text-xs">
-                    <i class="fa-solid fa-shield-halved text-red-400"></i>
-                    <span>İZİN İSTENMEYENLER</span>
-                </button>
-
-                <button onclick="resetData()" class="w-full mt-4 p-2.5 rounded-xl bg-red-950/60 hover:bg-red-900/80 border border-red-500/40 text-red-400 font-bold text-[11px] flex items-center justify-center gap-2 transition-all">
-                    <i class="fa-solid fa-trash-can"></i>
-                    <span>VERİLERİ SIFIRLA</span>
-                </button>
-            </div>
-
-            <!-- CONTENT AREA -->
-            <div class="md:col-span-3 bg-black/50 rounded-xl border border-[#4a3525] p-4 md:p-6 min-h-[480px] flex flex-col justify-between relative overflow-hidden">
-                
-                <!-- TAB 0: HOME -->
-                <div id="tab-home" class="tab-content">
-                    <div class="flex items-center justify-between border-b border-[#4a3525] pb-3 mb-4">
-                        <div class="book-font text-xs text-amber-400 tracking-wider">PANEL ANA SAYFA</div>
-                        <div class="text-xs font-bold text-amber-200/70">Sayfa: <span id="home-saved-page" class="text-amber-400">1</span> / 500</div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-black/70 border-2 border-amber-500/40 rounded-xl p-4 flex flex-col justify-between">
-                            <div>
-                                <div class="text-amber-400 text-xl mb-2"><i class="fa-solid fa-user-shield"></i></div>
-                                <div class="book-font text-xs font-bold text-amber-300 mb-1">YÖNETİCİ BAĞLANTI DURUMU</div>
-                                <p id="home-admin-status-text" class="text-[11px] text-amber-100/70 mb-4">Henüz yönetici izni alınmadı. ID oluşturmak ve tam yetki için başvurun.</p>
-                            </div>
-                            <button id="request-admin-btn" onclick="requestAdminID()" class="w-full py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg transition-all">ÖZEL ID VE YETKİ İSTE</button>
-                        </div>
-
-                        <div class="bg-black/70 border-2 border-cyan-500/40 rounded-xl p-4 flex flex-col justify-between">
-                            <div>
-                                <div class="text-cyan-400 text-xl mb-2"><i class="fa-solid fa-users"></i></div>
-                                <div class="book-font text-xs font-bold text-cyan-300 mb-1">ARKADAŞ SİSTEMİ & ALTIN</div>
-                                <p class="text-[11px] text-amber-100/70 mb-4">Arkadaş ekle, diğer kullanıcılardan bildirimle altın talep et veya bağışla.</p>
-                            </div>
-                            <button onclick="switchTab('friends')" class="w-full py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-lg transition-all">ARKADAŞLARA GİT</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 1: PLAY (BOOK) -->
-                <div id="tab-play" class="tab-content hidden flex flex-col h-full justify-between">
-                    <div class="flex justify-between items-center mb-2 border-b border-[#4a3525] pb-2">
-                        <h2 class="book-font text-sm font-bold text-amber-400 flex items-center gap-2">
-                            <i class="fa-solid fa-book-bookmark"></i> KİTAP OKUMA ALANI
-                        </h2>
-                        <span class="text-xs font-bold text-amber-400 bg-black/60 px-3 py-1 rounded-full border border-amber-500/30">
-                            SAYFA <span id="current-page-num">1</span> / 500
-                        </span>
-                    </div>
-
-                    <div class="book-container my-auto py-2">
-                        <div id="book-spread-box" class="book-spread">
-                            <div class="book-page left" id="left-page-el">
-                                <div class="text-[10px] text-stone-500 font-serif italic">The CR7 Chronicle</div>
-                                <div>
-                                    <div class="text-xs text-amber-900 font-bold mb-1 uppercase tracking-wider book-font">Sol Sayfa</div>
-                                    <div id="left-page-content" class="text-xs leading-relaxed text-[#2c221e] font-serif">
-                                        Cristiano Ronaldo'nun hayat hikayesi...
-                                    </div>
-                                </div>
-                                <div class="text-[9px] text-stone-500 pt-1 border-t border-stone-300">Bölüm I</div>
-                            </div>
-
-                            <div class="book-page right" id="right-page-el">
-                                <div class="text-[10px] text-stone-500 font-serif italic text-right">The CR7 Chronicle</div>
-                                <div>
-                                    <div class="text-xs text-amber-900 font-bold mb-1 uppercase tracking-wider book-font">Sağ Sayfa</div>
-                                    <div id="right-page-content" class="text-xs leading-relaxed text-[#2c221e] font-serif">
-                                        Kariyer rekorları ve detayları...
-                                    </div>
-                                </div>
-                                <div class="text-[9px] text-stone-500 pt-1 border-t border-stone-300 flex justify-between">
-                                    <span>Sayfa çevrildiğinde +50 Coin</span>
-                                    <span class="font-bold text-amber-900">Cilt I</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between bg-black/70 p-3 rounded-xl border border-[#4a3525]">
-                        <button onclick="changePage(-1)" class="px-4 py-2 bg-stone-900 hover:bg-stone-800 rounded-lg font-bold text-xs text-amber-400 border border-amber-500/30 transition-all">
-                            <i class="fa-solid fa-chevron-left"></i> ÖNCEKİ
-                        </button>
-                        <span class="text-[11px] text-amber-200/60 hidden md:inline">Fiziksel Sayfa Aktif</span>
-                        <button onclick="changePage(1)" class="px-4 py-2 bg-stone-900 hover:bg-stone-800 rounded-lg font-bold text-xs text-amber-400 border border-amber-500/30 transition-all">
-                            SONRAKİ <i class="fa-solid fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- TAB 2: FRIENDS & GOLD REQUEST -->
-                <div id="tab-friends" class="tab-content hidden flex flex-col h-full">
-                    <div class="flex justify-between items-center mb-3 border-b border-[#4a3525] pb-2">
-                        <h2 class="book-font text-sm font-bold text-cyan-400">ARKADAŞ LİSTESİ & ALTIN İSTE</h2>
-                        <div class="flex gap-2">
-                            <input type="text" id="friend-input" placeholder="Arkadaş Adı / ID" class="bg-black/70 border border-cyan-500/40 rounded-lg px-3 py-1 text-xs text-white outline-none">
-                            <button onclick="addFriend()" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-lg transition-all">EKLE</button>
-                        </div>
-                    </div>
-
-                    <div class="overflow-y-auto max-h-[350px] space-y-2 pr-1" id="friends-list-container">
-                        <!-- Arkadaş Kartları -->
-                    </div>
-                </div>
-
-                <!-- TAB 3: SHOP (ALTIN SATIN ALIMI) -->
-                <div id="tab-shop" class="tab-content hidden flex flex-col h-full">
-                    <div class="flex justify-between items-center mb-3 border-b border-[#4a3525] pb-2">
-                        <h2 class="book-font text-sm font-bold text-yellow-400">ALTIN MAĞAZASI (BAĞLI İŞLEM)</h2>
-                        <span class="text-xs text-amber-200/70">Altın paketleri doğrudan sisteme işlenir</span>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-auto">
-                        <div class="bg-black/70 border-2 border-yellow-500/40 rounded-xl p-4 flex flex-col justify-between text-center">
-                            <div>
-                                <div class="text-yellow-400 text-3xl mb-2"><i class="fa-solid fa-coins"></i></div>
-                                <div class="book-font text-sm font-bold text-yellow-300 mb-1">1,000 ALTIN</div>
-                                <p class="text-[11px] text-amber-100/70 mb-4">Standart başlangıç paketi.</p>
-                            </div>
-                            <button onclick="buyGoldDirect(1000)" class="w-full py-2 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold text-xs rounded-lg transition-all">AL (1000 COIN)</button>
-                        </div>
-
-                        <div class="bg-black/70 border-2 border-yellow-500/60 rounded-xl p-4 flex flex-col justify-between text-center relative overflow-hidden">
-                            <div class="absolute top-0 right-0 bg-yellow-500 text-slate-950 font-bold text-[9px] px-2 py-0.5 rounded-bl">POPÜLER</div>
-                            <div>
-                                <div class="text-yellow-400 text-3xl mb-2"><i class="fa-solid fa-sack-dollar"></i></div>
-                                <div class="book-font text-sm font-bold text-yellow-300 mb-1">5,000 ALTIN</div>
-                                <p class="text-[11px] text-amber-100/70 mb-4">Gelişmiş kullanıcı paketi.</p>
-                            </div>
-                            <button onclick="buyGoldDirect(5000)" class="w-full py-2 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold text-xs rounded-lg transition-all">AL (4500 COIN)</button>
-                        </div>
-
-                        <div class="bg-black/70 border-2 border-amber-500/80 rounded-xl p-4 flex flex-col justify-between text-center">
-                            <div>
-                                <div class="text-amber-400 text-3xl mb-2"><i class="fa-solid fa-crown"></i></div>
-                                <div class="book-font text-sm font-bold text-amber-300 mb-1">20,000 ALTIN</div>
-                                <p class="text-[11px] text-amber-100/70 mb-4">Efsanevi CR7 hazine sandığı.</p>
-                            </div>
-                            <button onclick="buyGoldDirect(20000)" class="w-full py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg transition-all">AL (15000 COIN)</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 4: İZİN İSTENMEYENLER LİSTESİ -->
-                <div id="tab-settings" class="tab-content hidden flex flex-col h-full">
-                    <div class="flex justify-between items-center mb-3 border-b border-[#4a3525] pb-2">
-                        <h2 class="book-font text-sm font-bold text-red-400">İZİN İSTENMEYEN KULLANICILAR</h2>
-                        <span class="text-xs text-amber-200/70">Otomatik engellenen/sessize alınanlar</span>
-                    </div>
-
-                    <div class="overflow-y-auto max-h-[350px] space-y-2 pr-1" id="ignored-list-container">
-                        <!-- Liste -->
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- SCRIPT LOGIC -->
     <script>
-        let currentPage = 1;
-        let userCoins = 500;
-        let userUniqueId = localStorage.getItem('cr7_unique_id') || null;
-        let isAdminAuthorized = localStorage.getItem('cr7_admin_auth') === 'true';
-        
-        let friends = JSON.parse(localStorage.getItem('cr7_friends')) || [
-            { id: "USER_9841", name: "Ahmet_Pro", online: true },
-            { id: "USER_3320", name: "Mehmet_GS", online: false },
-            { id: "USER_7712", name: "Ronaldo_Fan", online: true }
-        ];
+        // LocalStorage ile Kalıcı Coin Sistemi
+        let userCoins = parseInt(localStorage.getItem('ronaldoCoins')) || 100;
+        document.getElementById('coinCount').innerText = userCoins;
 
-        let ignoredUsers = JSON.parse(localStorage.getItem('cr7_ignored_users')) || [];
-        let pendingRequestUser = null;
-
-        function initAppState() {
-            if (userUniqueId) {
-                document.getElementById('user-unique-id').innerText = userUniqueId;
-                if (isAdminAuthorized) {
-                    document.getElementById('admin-badge').classList.remove('hidden');
-                    document.getElementById('home-admin-status-text').innerText = `Özel ID Aktif ve Doğrulandı: ${userUniqueId}. Tüm altın transferleri ve istekler sana bağlı.`;
-                    document.getElementById('request-admin-btn').innerText = "YETKİ AKTİF";
-                    document.getElementById('request-admin-btn').disabled = true;
-                    document.getElementById('request-admin-btn').classList.add('opacity-50', 'cursor-not-allowed');
-                }
-            } else {
-                document.getElementById('user-unique-id').innerText = "Oluşturulmadı";
-            }
-            renderFriends();
-            renderIgnoredUsers();
-        }
-
-        function requestAdminID() {
-            if (isAdminAuthorized) return;
-            userUniqueId = "CR7_ADMIN_" + Math.floor(100000 + Math.random() * 900000);
-            isAdminAuthorized = true;
-            
-            localStorage.setItem('cr7_unique_id', userUniqueId);
-            localStorage.setItem('cr7_admin_auth', 'true');
-            
-            initAppState();
-            showToast("ÖZEL YÖNETİCİ ID OLUŞTURULDU!");
-            confetti({ particleCount: 60, spread: 60 });
-        }
-
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playPaperSound() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            try {
-                const bufferSize = audioCtx.sampleRate * 0.18;
-                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = (Math.random() * 2 - 1) * Math.sin(i / bufferSize * Math.PI);
-                }
-                const noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass'; filter.frequency.value = 850; filter.Q.value = 3;
-                const gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
-                noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
-                noise.start();
-            } catch (e) {}
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('coin-toast-fixed');
-            document.getElementById('toast-text').innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 1200);
-        }
-
-        function updateUI(award = true) {
-            document.getElementById('current-page-num').innerText = currentPage;
-            document.getElementById('home-saved-page').innerText = currentPage;
-            document.getElementById('cash-balance').innerText = `${userCoins} CR7 Coin`;
-            
-            document.getElementById('left-page-content').innerText = `Sayfa ${currentPage} (Sol): Cristiano Ronaldo ve Georgina Rodriguez'in efsanevi anıları, Madeira günleri ve aile bağı detayları.`;
-            document.getElementById('right-page-content').innerText = `Sayfa ${currentPage+1} (Sağ): Kulüp kariyeri, rekorlar, şampiyonluklar ve unutulmaz zafer geceleri anlatılıyor.`;
-
-            if (award) {
-                userCoins += 50;
-                document.getElementById('cash-balance').innerText = `${userCoins} CR7 Coin`;
-                showToast("+50 CR7 COIN EKLENDİ!");
-            }
-        }
-
-        function animatePageTurn(direction) {
-            const rightPage = document.getElementById('right-page-el');
-            const leftPage = document.getElementById('left-page-el');
-            playPaperSound();
-            if (direction > 0) {
-                rightPage.classList.add('turning-forward');
-                setTimeout(() => { rightPage.classList.remove('turning-forward'); }, 700);
-            } else {
-                leftPage.classList.add('turning-backward');
-                setTimeout(() => { leftPage.classList.remove('turning-backward'); }, 700);
-            }
-        }
-
-        function changePage(delta) {
-            if (currentPage + delta >= 1 && currentPage + delta <= 500) {
-                currentPage += delta;
-                animatePageTurn(delta);
-                updateUI(true);
-            }
-        }
-
-        function renderFriends() {
-            const container = document.getElementById('friends-list-container');
-            if (friends.length === 0) {
-                container.innerHTML = `<div class="text-xs text-amber-200/50 text-center py-6">Henüz ekli arkadaş yok.</div>`;
-                return;
-            }
-            let html = '';
-            friends.forEach(f => {
-                html += `
-                    <div class="bg-black/70 p-3 rounded-xl border border-[#4a3525] flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2.5 h-2.5 rounded-full ${f.online ? 'bg-emerald-400' : 'bg-stone-500'}"></div>
-                            <div>
-                                <div class="font-bold text-xs text-white">${f.name}</div>
-                                <div class="text-[10px] text-cyan-300 font-mono">${f.id}</div>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="requestGoldFromUser('${f.name}')" class="px-3 py-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold text-[10px] rounded-lg transition-all">31 ALTIN İSTE</button>
-                            <button onclick="removeFriend('${f.id}')" class="px-2 py-1 bg-red-950 text-red-400 hover:bg-red-900 rounded-lg text-[10px]"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        function addFriend() {
-            const input = document.getElementById('friend-input');
-            const val = input.value.trim();
-            if(!val) return;
-            const newFriend = {
-                id: "USER_" + Math.floor(1000 + Math.random() * 9000),
-                name: val,
-                online: true
-            };
-            friends.push(newFriend);
-            localStorage.setItem('cr7_friends', JSON.stringify(friends));
-            input.value = '';
-            renderFriends();
-            showToast("ARKADAŞ EKLENDİ!");
-        }
-
-        function removeFriend(id) {
-            friends = friends.filter(f => f.id !== id);
-            localStorage.setItem('cr7_friends', JSON.stringify(friends));
-            renderFriends();
-            showToast("ARKADAŞ SİLİNDİ!");
-        }
-
-        function requestGoldFromUser(friendName) {
-            if (!isAdminAuthorized) {
-                alert("Önce ana menüden 'Özel ID ve Yetki İste' butonuna basarak kendi ID'ni oluşturmalısın!");
-                switchTab('home');
-                return;
-            }
-
-            if (ignoredUsers.includes(friendName)) {
-                showToast(`${friendName} izin istenmeyenler listesinde. İstek otomatik engellendi!`);
-                return;
-            }
-
-            pendingRequestUser = friendName;
-            document.getElementById('modal-request-text').innerText = `${friendName} adlı kullanıcı 31 altın istiyor. İzin veriyor musun?`;
-            document.getElementById('never-ask-checkbox').checked = false;
-            document.getElementById('gold-request-modal').classList.remove('hidden');
-        }
-
-        function handleGoldRequestResponse(isAllowed) {
-            const neverAsk = document.getElementById('never-ask-checkbox').checked;
-            const modal = document.getElementById('gold-request-modal');
-            modal.classList.add('hidden');
-
-            if (neverAsk && pendingRequestUser) {
-                if (!ignoredUsers.includes(pendingRequestUser)) {
-                    ignoredUsers.push(pendingRequestUser);
-                    localStorage.setItem('cr7_ignored_users', JSON.stringify(ignoredUsers));
-                    renderIgnoredUsers();
-                }
-            }
-
-            if (isAllowed) {
-                if (userCoins >= 31) {
-                    userCoins -= 31;
-                    updateUI(false);
-                    showToast(`${pendingRequestUser} kullanıcısına 31 altın gönderildi!`);
-                    confetti({ particleCount: 30, spread: 30 });
-                } else {
-                    showToast("Yetersiz altın bakiyesi!");
-                }
-            } else {
-                showToast("Altın isteği reddedildi.");
-            }
-            pendingRequestUser = null;
-        }
-
-        function renderIgnoredUsers() {
-            const container = document.getElementById('ignored-list-container');
-            if (ignoredUsers.length === 0) {
-                container.innerHTML = `<div class="text-xs text-amber-200/50 text-center py-6">İzin istenmeyen kayıtlı kullanıcı bulunmuyor.</div>`;
-                return;
-            }
-            let html = '';
-            ignoredUsers.forEach((name, idx) => {
-                html += `
-                    <div class="bg-black/70 p-3 rounded-xl border border-red-500/30 flex items-center justify-between">
-                        <div class="font-bold text-xs text-red-300">${name}</div>
-                        <button onclick="removeIgnoredUser(${idx})" class="px-3 py-1 bg-stone-800 hover:bg-stone-700 text-amber-400 text-[10px] rounded-lg">LİSTEDEN ÇIKAR</button>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        function removeIgnoredUser(idx) {
-            ignoredUsers.splice(idx, 1);
-            localStorage.setItem('cr7_ignored_users', JSON.stringify(ignoredUsers));
-            renderIgnoredUsers();
-            showToast("Kullanıcı izin listesine geri eklendi.");
-        }
-
-        function buyGoldDirect(amount) {
+        function updateCoins(amount) {
             userCoins += amount;
-            updateUI(false);
-            showToast(`+${amount} ALTIN HESABA EKLENDİ!`);
-            confetti({ particleCount: 50, spread: 50 });
+            localStorage.setItem('ronaldoCoins', userCoins);
+            document.getElementById('coinCount').innerText = userCoins;
         }
 
-        function resetData() {
-            if(confirm("Tüm ilerleme ve veriler sıfırlansın mı?")) {
-                localStorage.clear();
-                location.reload();
+        function earnCoin() {
+            updateCoins(50);
+            alert('Başarıyla 50 altın eklendi!');
+        }
+
+        // Sekme Değiştirme Fonksiyonu
+        function switchTab(tab) {
+            const view = document.getElementById('panelView');
+            if (tab === 'home') {
+                view.innerHTML = `
+                    <h3>Panel Ana Sayfa</h3>
+                    <p>Özel ID Aktif ve Doğrulandı: <strong>CR7_ADMIN_121147</strong>. Tüm altın transferleri ve istekler sana bağlı.</p>
+                    <button class="action-btn" onclick="earnCoin()">Günlük Altın Al (+50)</button>
+                `;
+            } else if (tab === 'book') {
+                view.innerHTML = `
+                    <h3>Kitabı Oku - Bölüm 1</h3>
+                    <div class="book-text">
+                        <p>Küçük Cristiano, Madeira'nın sokaklarında topun peşinden koşarken geleceğin efsanesi olacağından habersizdi...</p>
+                        <p><i>"Hayallerinizin peşinden koşun, çünkü imkansız sadece bir kelimedir."</i> - CR7</p>
+                    </div>
+                `;
+            } else if (tab === 'store') {
+                view.innerHTML = `
+                    <h3>Altın Mağazası</h3>
+                    <p>Mevcut Altın ile özel yetenekler satın alabilirsin.</p>
+                    <button class="action-btn" onclick="updateCoins(100)">Altın Satın Al (Test)</button>
+                `;
             }
         }
-
-        function startVoiceAI() {
-            const btnText = document.getElementById('ai-btn-text');
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) return;
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'tr-TR';
-            btnText.innerText = "DİNLİYOR";
-            recognition.start();
-            recognition.onresult = (event) => {
-                const text = event.results[0][0].transcript.toLowerCase();
-                btnText.innerText = "YİĞİT AI";
-                if (text.includes("sonraki")) changePage(1);
-                if (text.includes("önceki")) changePage(-1);
-            };
-            recognition.onerror = () => { btnText.innerText = "YİĞİT AI"; };
-            recognition.onend = () => { btnText.innerText = "YİĞİT AI"; };
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.sidebar-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            const navBtn = document.getElementById(`nav-${tabId}`);
-            if(navBtn) navBtn.classList.add('active');
-        }
-
-        initAppState();
-        updateUI(false);
     </script>
 </body>
 </html>
