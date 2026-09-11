@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ronaldo'nun Hayatı - v2.4 Social & Gold Request Edition</title>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --panel-bg: #1a1a1a;
+            --border-gold: #c5a059;
+            --text-gold: #e6ca65;
+            --text-white: #ffffff;
+            --accent-btn: #b8860b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 900px;
+            background: var(--panel-bg);
+            border: 2px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-gold);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .admin-badge {
+            background: #d32f2f;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .coin-display {
+            background: rgba(197, 160, 89, 0.2);
+            border: 1px solid var(--border-gold);
+            padding: 6px 14px;
+            border-radius: 8px;
+            color: var(--text-gold);
+            font-weight: bold;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .menu-btn {
+            background: #2a2a2a;
+            border: 1px solid var(--border-gold);
+            color: var(--text-white);
+            padding: 12px;
+            text-align: left;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .menu-btn:hover {
+            background: var(--border-gold);
+            color: #000;
+        }
+
+        .panel-view {
+            background: #161616;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 250px;
+        }
+
+        .book-text {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #d4d4d4;
+        }
+
+        .action-btn {
+            background: var(--accent-btn);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Üst Bilgi Alanı -->
+        <div class="header">
+            <div>
+                <h2>CR7_GALACTIC_USER</h2>
+                <span class="admin-badge">YÖNETİCİ</span>
+            </div>
+            <div class="coin-display">
+                Altın: <span id="coinCount">100</span> 🪙
+            </div>
+        </div>
+
+        <!-- Ana Panel -->
+        <div class="main-content">
+            <!-- Menü Butonları -->
+            <div class="menu">
+                <button class="menu-btn" onclick="switchTab('home')">🏠 Ana Menü</button>
+                <button class="menu-btn" onclick="switchTab('book')">📖 Kitabı Oku</button>
+                <button class="menu-btn" onclick="switchTab('store')">🛒 Altın Mağazası</button>
+            </div>
+
+            <!-- Dinamik Ekran Alanı -->
+            <div class="panel-view" id="panelView">
+                <h3>Panel Ana Sayfa</h3>
+                <p>Özel ID Aktif ve Doğrulandı: <strong>CR7_ADMIN_121147</strong>. Tüm altın transferleri ve istekler sana bağlı.</p>
+                <button class="action-btn" onclick="earnCoin()">Günlük Altın Al (+50)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // LocalStorage ile Kalıcı Coin Sistemi
+        let userCoins = parseInt(localStorage.getItem('ronaldoCoins')) || 100;
+        document.getElementById('coinCount').innerText = userCoins;
+
+        function updateCoins(amount) {
+            userCoins += amount;
+            localStorage.setItem('ronaldoCoins', userCoins);
+            document.getElementById('coinCount').innerText = userCoins;
+        }
+
+        function earnCoin() {
+            updateCoins(50);
+            alert('Başarıyla 50 altın eklendi!');
+        }
+
+        // Sekme Değiştirme Fonksiyonu
+        function switchTab(tab) {
+            const view = document.getElementById('panelView');
+            if (tab === 'home') {
+                view.innerHTML = `
+                    <h3>Panel Ana Sayfa</h3>
+                    <p>Özel ID Aktif ve Doğrulandı: <strong>CR7_ADMIN_121147</strong>. Tüm altın transferleri ve istekler sana bağlı.</p>
+                    <button class="action-btn" onclick="earnCoin()">Günlük Altın Al (+50)</button>
+                `;
+            } else if (tab === 'book') {
+                view.innerHTML = `
+                    <h3>Kitabı Oku - Bölüm 1</h3>
+                    <div class="book-text">
+                        <p>Küçük Cristiano, Madeira'nın sokaklarında topun peşinden koşarken geleceğin efsanesi olacağından habersizdi...</p>
+                        <p><i>"Hayallerinizin peşinden koşun, çünkü imkansız sadece bir kelimedir."</i> - CR7</p>
+                    </div>
+                `;
+            } else if (tab === 'store') {
+                view.innerHTML = `
+                    <h3>Altın Mağazası</h3>
+                    <p>Mevcut Altın ile özel yetenekler satın alabilirsin.</p>
+                    <button class="action-btn" onclick="updateCoins(100)">Altın Satın Al (Test)</button>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+
